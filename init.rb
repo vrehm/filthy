@@ -13,6 +13,7 @@ def new_filter(collection_data, args = [])
   filter.title = title+"-"+args[0].to_s.chomp
   filter.add_rules('variant_title', 'contains', args[0])
   filter.add_rules('tag', 'equals', title)
+  filter.add_meta('parent', title.to_s, 'string', 'global')
   
   # # if this is the double filter
   if(args.length > 1) 
@@ -62,6 +63,7 @@ deleteFilters(ShopifyAPI::SmartCollection.find(:all, :params => {:limit => 250})
 @collections = ShopifyAPI::CustomCollection.all
 
 @collections.each do |collection|
-  create_filters(CollectionData.new(collection.id, collection.title))
+  sizes = [2, 4, 6, 8, 10, 12, 14, 16]
+  create_filters(CollectionData.new(collection.id, collection.title, sizes))
 end
 
