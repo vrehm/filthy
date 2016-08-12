@@ -96,29 +96,82 @@ describe 'CollectionData' do
 
   describe '#map_products_from_collects' do
 
-    let(:collection) { CollectionData.new(268585345, 'Summer-2016') }      
-    let(:subject) { collection.map_products_from_collects(collection.get_collects(268585345)) }
-
-    before do
+    before(:all) do
+      @collection = CollectionData.new(268585345, 'Summer-2016') 
+      @subject = @collection.map_products_from_collects(@collection.get_collects(268585345))
       @product_count = ShopifyAPI::CustomCollection.find(268585345).attributes[:products_count]
-      sleep(0.1)
     end
 
     it 'takes collects and returns an array' do
-      expect(subject).to be_an(Array)
+      expect(@subject).to be_an(Array)
     end 
 
     it 'returns products' do
-      expect(subject[0]).to be_kind_of(ShopifyAPI::Product)
+      expect(@subject[0]).to be_kind_of(ShopifyAPI::Product)
     end
 
     it "should have all the products" do
-      expect(@product_count).to eq(subject.length)
+      expect(@product_count).to eq(@subject.length)
     end
 
-    after do
-      sleep(0.50)
+    after(:all) do
+      sleep(1)
+      puts 'sleeping please wait one second'
     end
+
+  end
+
+
+  describe '#filter_variant_data' do
+
+    before(:all) do
+      @products = [ ]
+      @colors = [ 'Black', 'Pink', 'Pink/Red', 'Pink/Black', 'Pink / Red', 'Pink / Black', 'Blue', nil ]
+      @colors.each do |color|
+        product = ShopifyAPI::Product.new(:variants => [{:title => "2 / #{color}", :option1 => "2", :option2 => "#{color}" }])
+        @products << product
+      end
+
+    end
+
+    let(:subject) do
+      @collection = CollectionData.new(268585345, 'Summer-2016') 
+    end
+
+    it 'expects products to have a length of 8' do
+      expect(@products.length).to eql(8)
+    end
+
+    it 'should take products and return an array' do
+      expect(subject.filter_variant_data(@products, :option2)).to be_kind_of(Array)
+    end
+
+    it 'should return an array of colors when passed an array of products' do
+      expect(subject.filter_variant_data(@products, :option2)).to include('Black', 'Pink', 'Blue')
+    end
+
+    it 'should not have any slashes in the names' do
+      expect(subject.filter_variant_data(@products, :option2)).to match_array(['Black', 'Pink', 'Red', 'Blue'])
+    end
+
+    it 'can not include a nil in an array' do
+      expect(subject.filter_variant_data(@products, :option2)).not_to include([nil])
+    end
+
+    it 'can not contain nil' do
+      expect(subject.filter_variant_data(@products, :option2)).not_to include(nil)
+    end
+
+    it 'should return an array of sizes if passed option1' do
+      expect(subject.filter_variant_data(@products, :option1)).to include("2")
+    end
+
+  end
+
+
+  desribe 'remove_doubles_and_format_array' do
+
+    
 
   end
 

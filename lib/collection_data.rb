@@ -22,7 +22,7 @@ class CollectionData
         product.tags += ", #{title}"
       end
     end
-    return products
+    products
   end
 
   def get_collects(id)
@@ -32,9 +32,27 @@ class CollectionData
   def map_products_from_collects(collects)
     collects.map do |collect| 
       ShopifyAPI::Product.find(collect.attributes[:product_id]) 
-      sleep(0.25) 
     end 
+  end
 
+  def filter_variant_data(products, value)
+    data = []
+    products.each do |product| #anything with a slash should be split into two variables
+      product.variants.each do |variant|
+        #store the variants value in a var
+        var = variant.attributes[value]
+        #if this is not nil add the value
+        if( !var.nil? )
+          # if this is a split string
+          if(var.include? '/')
+            var.split('/').each { |x| data << x.chomp.strip }
+          else
+            data << var
+          end
+        end
+      end
+    end
+    data.compact.flatten.uniq.reject(&:empty?) #.flatten.uniq # format data here to remove doubles
   end
 
 end
