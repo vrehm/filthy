@@ -1,28 +1,21 @@
 require 'shopify_api'
 
-class Filter # this has not been tested
-  
+class Filter
+
+  attr_reader :meta
   attr_accessor :title, :rules
 
   def initialize()
     @title = ''
     @rules = [{:column => 'variant_inventory', :relation => 'greater_than', :condition => '0'}]
-    @meta = []
+    @meta = ShopifyAPI::Metafield.new
   end
 
-  def save #TODO create and save split this up into two
+  def create #TODO create and savegit  split this up into two
     filter = ShopifyAPI::SmartCollection.new
     filter.attributes[:rules] = @rules
     filter.attributes[:title] = @title
-    if(filter.save())
-      puts 'save succesful'
-      puts 'saving meta'
-      filter.add_metafield(@meta)
-      puts 'meta is saved'
-      sleep(0.50)
-    else
-      puts 'not saved'
-    end
+    return filter
   end
 
   def add_rules(column, relation, arg) 
@@ -30,7 +23,6 @@ class Filter # this has not been tested
   end
 
   def add_meta(key, value, value_type, namespace)
-    @meta = ShopifyAPI::Metafield.new
     @meta.attributes[:key] = key
     @meta.attributes[:value] = value
     @meta.attributes[:value_type] = value_type

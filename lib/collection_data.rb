@@ -3,14 +3,23 @@ require 'shopify_api'
 
 class CollectionData
 
-  attr_reader :id, :title
-  attr_accessor :products
+  attr_reader :id, :title, :colors, :products
+  attr_accessor :sizes
 
   def initialize(id, title)
     @id = id
     @title = title
     @products = []
     @colors = []
+    @sizes = sizes
+  end
+
+  def set_products
+    @products = map_products_from_collects(get_collects(@id))
+  end
+
+  def set_colors
+    @colors = filter_variant_data(products, :option2)
   end
 
   def has_tags?(products)
@@ -40,7 +49,10 @@ class CollectionData
     data = []
     products.each do |product| #anything with a slash should be split into two variables
       product.variants.each do |variant|
-        data.push(format_color(variant.attributes[value])) # push the formated color data into the data array
+
+        var = variant.attributes[value] || ""
+
+        data.push(format_color(var)) # push the formated color data into the data array
       end
     end
     format_array(data).reject(&:empty?) # format data here to remove doubles, nil and flattens 
@@ -51,7 +63,7 @@ class CollectionData
   end
 
   def format_color(string)
-    (string.include? '/') ? string.split('/').map{ |x| x.strip } : string.strip
+    (string.include? '/') && !string.nil? ? string.split('/').map{ |x| x.strip } : string.strip
   end
 
 end
