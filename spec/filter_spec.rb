@@ -1,6 +1,15 @@
-require_relative('filter')
+
+require('filter')
 
 
-describe '#create_filter'  do
-  
+describe 'Filter'  do
+    
+  describe 'attributes' do
+
+    it 'is initialized with title, rules' do
+      
+    end
+
+  end
+
 end

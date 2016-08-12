@@ -10,7 +10,7 @@ class Filter # this has not been tested
     @meta = []
   end
 
-  def save
+  def save #TODO create and save split this up into two
     filter = ShopifyAPI::SmartCollection.new
     filter.attributes[:rules] = @rules
     filter.attributes[:title] = @title
@@ -36,6 +36,4 @@ class Filter # this has not been tested
     @meta.attributes[:value_type] = value_type
     @meta.attributes[:namespace] = namespace
   end
-
-
 end

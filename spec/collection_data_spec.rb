@@ -38,8 +38,8 @@ describe 'CollectionData' do
 
     before do
       @collection = CollectionData.new(1000, 'Summer-2016')
-      @collection2 = CollectionData.new(1111, 'Spring-2016')
-      @products = [ShopifyAPI::Product.find(7156459905)]
+      @collection2 = CollectionData.new(1111, 'Spring-2016') 
+      @products = [ShopifyAPI::Product.find(7156459905)] ## TODO REMOVE DEPENDANCE ON API HERE TO MAKE TEST UNIVERAL
       @products[0].tags = ""
     end
 
@@ -87,8 +87,8 @@ describe 'CollectionData' do
       expect(@collection.get_collects(@collection.id)[0]).to be_a(ShopifyAPI::Collect)
     end
 
-    it 'a collect should belong to the right collection id' do
-      expect(@collection.get_collects(@collection.id)[0].collection_id).to eq(268585345)
+    it 'a collect should belong to the right collection id' do  ## TODO REMOVE DEPENDANCE ON API HERE
+      expect(@collection.get_collects(@collection.id)[0].collection_id).to eq(268585345)  ## TODO REMOVE DEPENDANCE ON API HERE
     end
 
   end
@@ -98,8 +98,8 @@ describe 'CollectionData' do
 
     before(:all) do
       @collection = CollectionData.new(268585345, 'Summer-2016') 
-      @subject = @collection.map_products_from_collects(@collection.get_collects(268585345))
-      @product_count = ShopifyAPI::CustomCollection.find(268585345).attributes[:products_count]
+      @subject = @collection.map_products_from_collects(@collection.get_collects(268585345))  ## TODO REMOVE DEPENDANCE ON API HERE
+      @product_count = ShopifyAPI::CustomCollection.find(268585345).attributes[:products_count]  ## TODO REMOVE DEPENDANCE ON API HERE
     end
 
     it 'takes collects and returns an array' do
@@ -169,58 +169,36 @@ describe 'CollectionData' do
   end
 
 
-  desribe 'remove_doubles_and_format_array' do
+  describe '#format_array' do
 
-    
+    let(:subject) do
+      @collection = CollectionData.new(268585345, 'Summer-2016') 
+    end
 
+    it 'takes an array of colors and removes unwated elements' do
+      array = [ 'Black', 'Pink', 'Pink', 'Pink', 'Blue', nil, nil, nil ]
+      expect(subject.format_array(array)).to match_array(['Black', 'Pink', 'Blue'])
+    end
   end
 
+  describe '#format_color' do
 
+    let(:subject) do
+      @collection = CollectionData.new(268585345, 'Summer-2016') 
+    end
 
-  # describe '#map_products' do
+    it 'removes / from string an returns array of strings' do
+      expect(subject.format_color('Black / Blue')).to match_array(['Black', 'Blue'])
+    end
+
+    it 'checks to see that the sting includes a slash if not it returns the string unharmed' do
+      expect(subject.format_color('Black')).to eq('Black')
+    end
+
+    it 'removes any white space from single color' do
+      expect(subject.format_color('Black ')).to eq('Black')
+    end
     
-  #   it 'return an array of ShoppifyProducts that belong to the collection' do
-        
-  #   end
-
-  # end 
-
-
-
-  # describe '#get_colors' do
-
-  #   before do
-  #     # create a product with variants
-  #   end
-
-  #   it 'returns an array of color names'
-  #     #expect colors to eq
-  #   end
-
-  # end
-  
-  # describe "#add_tags_to_product" do
-    
-  #   it 'returns a product with tags' do
-
-  #   end
-  
-  # end
-
-  # describe "#get_options" do
-    
-  #   it 'takes an array of products' do
-
-  #   end
-
-  #   it 'returns an array of string names' do
-
-  #   end
-
-  #   it 'it should split the string into two' do
-
-  #   end
-
-  # end
+  end
 
 end
