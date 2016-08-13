@@ -11,11 +11,11 @@ class CollectionData
     @title = title
     @products = []
     @colors = []
-    @sizes = sizes
+    @sizes = []
   end
 
   def set_products
-    @products = map_products_from_collects(get_collects(@id))
+    @products = map_products_from_collects(get_collects(id))
   end
 
   def set_colors
@@ -50,7 +50,7 @@ class CollectionData
     products.each do |product| #anything with a slash should be split into two variables
       product.variants.each do |variant|
 
-        var = variant.attributes[value] || ""
+        var = variant.attributes[value] || "" #incase of nil
 
         data.push(format_color(var)) # push the formated color data into the data array
       end
