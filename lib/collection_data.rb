@@ -41,6 +41,7 @@ class CollectionData
 
   def map_products_from_collects(collects)
     collects.map do |collect| 
+      # sleep(0.25) # rate limiter maybe do less
       ShopifyAPI::Product.find(collect.attributes[:product_id]) 
     end 
   end

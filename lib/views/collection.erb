@@ -1,6 +1,8 @@
-<%= @collection.title %>
+<ul> 
+  <h2> <%= @collection.title %> Total Colors </h2>
+  <% @collection_data.colors.each do |color| %>
+    <li>  <%= color %> </li>
+  <% end %>
+</ul>
 
 
-<% @collection_data.colors.each do |x| %>
-  <%= x %>
-<% end %>

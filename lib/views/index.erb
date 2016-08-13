@@ -3,9 +3,37 @@
   <% @collections.each do |x| %>
     <li>
       <%= x.title %> 
-      <a href="/collections/:<%=x.id %>" class="btn">View Collection Data</a>
+      <button data-id="<%=x.id%>" class="btn col-button">View Collection Data</button>
     </li>
   <% end %>
 </ul>
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script type="text/javascript">
+  
+  $( document ).ready(function(){
+
+    var $element = $('.col-button')
+
+    $element.on('click', function() { 
+      var id = $(this).data('id'); 
+
+      $.ajax({
+        type: 'GET',
+        data: 'json',
+        url: "/collections/:"+id,
+        dataType: 'JSON',
+        success: function(data) {
+          console.log(data);
+        }
+      });
+
+    });    
+  })
+
+
+
+</script>
 

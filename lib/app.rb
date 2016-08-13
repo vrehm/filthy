@@ -1,13 +1,17 @@
 require 'sinatra'
+require "sinatra/json"
 require 'shopify_api'
+require 'rack/throttle'
 require('./lib/collection_data')
 require('./lib/filter')
 require ('./secrets')
+
 
 #connect to the api
 before do
   ShopifyAPI::Base.site = "https://#{API_KEY}:#{PASSWORD}#{URL}"
 end
+
 
 helpers do
 
@@ -47,16 +51,13 @@ get '/' do
 end
 
 get '/collections/:id' do
-  @id = params['id']
-  @id.slice!(0)
-  @collection = ShopifyAPI::CustomCollection.find(@id)
+  id = params['id']
+  id.slice!(0)
+  @collection = ShopifyAPI::CustomCollection.find(id)
   @collection_data = get_data(@collection.title, @collection.id)  
-  erb :collection
+  json :collection_data => @collection_data
 end
 
-get 'collections/filter/:id' do
-  erb :filter
-end
 
 
 # post '/create-filter' do
