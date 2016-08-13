@@ -30,18 +30,19 @@ class CollectionData
        # this is the first tag
       elsif(!product.tags.include? title) 
         product.tags += ", #{title}"
+        #need tags to save TODO
       end
     end
     products
   end
 
   def get_collects(id)
-    ShopifyAPI::Collect.all(:params => { :collection_id => id.to_s })
+    ShopifyAPI::Collect.all(:params => {:limit => 250,  :collection_id => id.to_s })
   end
 
   def map_products_from_collects(collects)
     collects.map do |collect| 
-      # sleep(0.25) # rate limiter maybe do less
+      sleep(0.25) # rate limiter maybe do less
       ShopifyAPI::Product.find(collect.attributes[:product_id]) 
     end 
   end

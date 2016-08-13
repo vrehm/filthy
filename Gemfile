@@ -4,6 +4,10 @@ source "https://rubygems.org"
 
 # gem "rails"
 gem 'sinatra'
-gem 'rspec'
-gem 'rack-throttle', '~> 0.4.0'
+gem 'sinatra-contrib'
 gem 'sass'
+gem 'shopify_api'
+
+group :test do
+  gem 'rspec'
+end
