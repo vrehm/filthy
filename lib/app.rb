@@ -44,7 +44,6 @@ helpers do
   # end
 end
 
-# Homepage (Root path)
 get '/' do
   @collections = ShopifyAPI::CustomCollection.all
   erb :index
@@ -58,6 +57,10 @@ get '/collections/:id' do
   json :collection_data => @collection_data
 end
 
+post '/collections/:id/filters/new' do
+  id = params['id']
+  # accept @collection_data
+end
 
 
 # post '/create-filter' do

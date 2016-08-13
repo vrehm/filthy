@@ -1,12 +1,19 @@
+<header> Filthy </header>
+<aside>
+  <ul>
+    <% @collections.each do |x| %>
+      <li>
+        <%= x.title %> 
+        <button data-id="<%=x.id%>" class="btn col-button">View Collection Data</button>
+      </li>
+    <% end %>
+  </ul>
+</aside>
+<main>
+    
 
-<ul>
-  <% @collections.each do |x| %>
-    <li>
-      <%= x.title %> 
-      <button data-id="<%=x.id%>" class="btn col-button">View Collection Data</button>
-    </li>
-  <% end %>
-</ul>
+</main>
+
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>

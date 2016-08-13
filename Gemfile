@@ -6,3 +6,4 @@ source "https://rubygems.org"
 gem 'sinatra'
 gem 'rspec'
 gem 'rack-throttle', '~> 0.4.0'
+gem 'sass'
