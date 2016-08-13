@@ -6,4 +6,4 @@ set :root, './lib'
 
 require './lib/app'
 
-Sinatra::Application.run!
+run Filthy

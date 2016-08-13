@@ -33,13 +33,13 @@
 
 
 <body>
-  <header> Filthy </header>
+  <header> <h1>Filthy</h1> </header>
   <aside>
     <ul>
+      <h2> Main Collections </h2>
       <% @collections.each do |x| %>
         <li>
-          <%= x.title %> 
-          <button data-id="<%=x.id%>" class="btn col-button">View Collection Data</button>
+          <button data-id="<%=x.id%>" class="btn col-button">Load: <%=x.title%></button>
         </li>
       <% end %>
     </ul>
