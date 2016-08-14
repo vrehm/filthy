@@ -187,7 +187,6 @@ describe 'CollectionData' do
     end
   end
 
-()
   describe '#format_color' do
 
     let(:subject) do

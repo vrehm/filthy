@@ -15,7 +15,7 @@ class CollectionData
   end
 
   def set_products
-    @products = has_tags?(map_products_from_collects(get_collects(id)))
+    @products = map_products_from_collects(get_collects(id))
   end
 
   def set_colors
@@ -23,14 +23,14 @@ class CollectionData
   end
 
   def add_parent_tag_to_product(product) # add tag to collection so that it knows it's parent
-    if(product.tags.empty? || product.tags.nil?)
+    if(product.tags.empty?)
       product.tags += title
-      #product.save
-     # this is the first tag
+      sleep(0.10)
+      product.save
     elsif(!product.tags.include? title) 
       product.tags += ", #{title}"
-      #product.save
-      #need tags to save TODO
+      sleep(0.10)
+      product.save
     end
     product
   end
@@ -42,8 +42,9 @@ class CollectionData
   def map_products_from_collects(collects)
     collects.map do |collect| 
       sleep(0.25) # rate limiter maybe do less
+      product = ShopifyAPI::Product.find(collect.attributes[:product_id])
       # get each product and check to make sure that it has a collection tag 
-      add_parent_tag_to_product(ShopifyAPI::Product.find(collect.attributes[:product_id])) 
+      add_parent_tag_to_product(product) 
     end 
   end
 
