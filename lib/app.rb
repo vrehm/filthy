@@ -1,32 +1,22 @@
-require 'shopify_api'
+require './secrets'
+
 require './lib/collection_data'
 require './lib/filter'
-require './secrets'
-# helper methods 
 require './lib/sinatra/filter_helpers'
+require './lib/sinatra/asset_pipeline'
+# shopify
+require 'shopify_api'
 # sinatra stuff + sprockets
 require 'sinatra'
 require 'sinatra/base'
 require "sinatra/json"
 
-require 'sprockets'
-require 'sass'
-
 
 
 #connect to the api
 class Filthy < Sinatra::Base
+  register AssetPipeline::Assets
   helpers Sinatra::FilterHelper
-    # initialize new sprockets environment
-  set :environment, Sprockets::Environment.new
-
-  # append assets paths
-  environment.append_path "assets/stylesheets"
-  environment.append_path "assets/javascripts"
-
-  # compress assets
-  environment.js_compressor  = :uglify
-  environment.css_compressor = :scss
 
   before do
     ShopifyAPI::Base.site = "https://#{API_KEY}:#{PASSWORD}#{URL}"

@@ -14,6 +14,10 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    babel-source (5.8.35)
+    babel-transpiler (0.7.0)
+      babel-source (>= 4.0, < 6)
+      execjs (~> 2.0)
     backports (3.6.8)
     builder (3.2.2)
     concurrent-ruby (1.0.2)
@@ -72,6 +76,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  babel-transpiler
   rspec
   sass
   shopify_api

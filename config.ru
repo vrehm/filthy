@@ -6,4 +6,4 @@ set :root, './lib'
 
 require './lib/app'
 
-run Filthy
+run Filthy.new

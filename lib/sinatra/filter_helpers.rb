@@ -7,9 +7,10 @@ module Sinatra
       collection = CollectionData.new(id, title)
       collection.set_products
       collection.set_colors
+      collection.sizes = [2,4,6,8,10,12,14]
       return collection
     end
-
+    
   end
 
   helpers FilterHelper
