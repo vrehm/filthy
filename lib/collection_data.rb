@@ -15,25 +15,24 @@ class CollectionData
   end
 
   def set_products
-    @products = map_products_from_collects(get_collects(id))
+    @products = has_tags?(map_products_from_collects(get_collects(id)))
   end
 
   def set_colors
     @colors = filter_variant_data(products, :option2)
   end
 
-  def has_tags?(products)
-    products.each do |product|
-      # if this isnt the first tag and it's not the same
-      if(product.tags.empty?)
-        product.tags += title
-       # this is the first tag
-      elsif(!product.tags.include? title) 
-        product.tags += ", #{title}"
-        #need tags to save TODO
-      end
+  def add_parent_tag_to_product(product) # add tag to collection so that it knows it's parent
+    if(product.tags.empty? || product.tags.nil?)
+      product.tags += title
+      #product.save
+     # this is the first tag
+    elsif(!product.tags.include? title) 
+      product.tags += ", #{title}"
+      #product.save
+      #need tags to save TODO
     end
-    products
+    product
   end
 
   def get_collects(id)
@@ -43,7 +42,8 @@ class CollectionData
   def map_products_from_collects(collects)
     collects.map do |collect| 
       sleep(0.25) # rate limiter maybe do less
-      ShopifyAPI::Product.find(collect.attributes[:product_id]) 
+      # get each product and check to make sure that it has a collection tag 
+      add_parent_tag_to_product(ShopifyAPI::Product.find(collect.attributes[:product_id])) 
     end 
   end
 
@@ -51,10 +51,10 @@ class CollectionData
     data = []
     products.each do |product| #anything with a slash should be split into two variables
       product.variants.each do |variant|
-
-        var = variant.attributes[value] || "" #incase of nil
-
-        data.push(format_color(var)) # push the formated color data into the data array
+        #incase of nil
+        var = variant.attributes[value] || "" 
+        # push the formated color data into the data array
+        data.push(format_color(var)) 
       end
     end
     format_array(data).reject(&:empty?) # format data here to remove doubles, nil and flattens 
@@ -69,3 +69,18 @@ class CollectionData
   end
 
 end
+
+  # def has_tags?(products)
+  #   products.each do |product|
+  #     # if this isnt the first tag and it's not the same
+  #     if(product.tags.empty?)
+  #       product.tags += title
+  #      # this is the first tag
+  #     elsif(!product.tags.include? title) 
+  #       product.tags += ", #{title}"
+  #       product.save
+  #       #need tags to save TODO
+  #     end
+  #   end
+  #   products
+  # end

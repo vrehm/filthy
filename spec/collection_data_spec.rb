@@ -4,16 +4,19 @@ require('./secrets')
 
 describe 'CollectionData' do
 
+
   before do 
     # connect to shopify
     ShopifyAPI::Base.site = "https://#{API_KEY}:#{PASSWORD}#{URL}"
   end
+
 
   describe 'shopify connection' do
     it 'can create a new product' do
       expect(ShopifyAPI::Product.new).to be_a(ShopifyAPI::Product)        
     end
   end
+
 
   describe 'attributes' do
 
@@ -35,39 +38,41 @@ describe 'CollectionData' do
 
   end
 
-  describe '#has_tags?' do
+
+  describe '#add_parent_tag_to_product' do
 
     before do
       @collection = CollectionData.new(1000, 'Summer-2016')
       @collection2 = CollectionData.new(1111, 'Spring-2016') 
-      @products = [ShopifyAPI::Product.find(7156459905)] ## TODO REMOVE DEPENDANCE ON API HERE TO MAKE TEST UNIVERAL
-      @products[0].tags = ""
+      @products = [ShopifyAPI::Product.new(:tags => '', :title => 'dress'), ShopifyAPI::Product.new(:tags => 'Summer-2016', :title => 'dress')] 
     end
 
-    it 'takes and array of products and returns an array of products' do
+    it 'expect products argument to contain a product' do
       expect((@products)[0]).to be_a(ShopifyAPI::Product)
     end
+
+    it 'product array responds to tags' do
+      expect(@products[0]).to respond_to(:tags)
+    end
     
-    it 'expects product tags to be empty' do
+    it 's first product tag is empty' do
       expect(@products[0].tags).to eq("")
     end
 
     it 'adds tags to the product if the product has none' do
-      expect{@collection.has_tags?(@products)}.to change{@products[0].tags}.from("").to('Summer-2016')
+      expect{@collection.add_parent_tag_to_product(@products[0])}.to change{@products[0].tags}.from("").to('Summer-2016')
     end
 
-    it 'should return an array' do
-      expect(@collection.has_tags?(@products)).to be_kind_of(Array)
+    it 'should return a product' do
+      expect(@collection.add_parent_tag_to_product(@products[0])).to be_kind_of(ShopifyAPI::Product)
     end
 
     it 'should not add tags if the product allready has the same tag' do 
-      @collection.has_tags?(@products)
-      expect(@collection.has_tags?(@products)[0].tags).to eq("Summer-2016") 
+      expect(@collection.add_parent_tag_to_product(@products[1]).tags).to eq("Summer-2016") 
     end
 
-    it 'should add other collection name to product tag' do
-      @collection.has_tags?(@products) 
-      expect(@collection2.has_tags?(@products)[0].tags).to be == "Summer-2016, Spring-2016"
+    it 'should add other collection names to product tags' do 
+      expect(@collection2.add_parent_tag_to_product(@products[1]).tags).to be == "Summer-2016, Spring-2016"
     end
 
   end
@@ -182,6 +187,7 @@ describe 'CollectionData' do
     end
   end
 
+()
   describe '#format_color' do
 
     let(:subject) do
