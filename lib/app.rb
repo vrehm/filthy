@@ -20,6 +20,10 @@ class Filthy < Sinatra::Base
 
   before do
     ShopifyAPI::Base.site = "https://#{API_KEY}:#{PASSWORD}#{URL}"
+
+    @all_products = get_all_products();
+    @all_collects = get_all_collects();
+
   end
 
   get '/' do
@@ -32,7 +36,7 @@ class Filthy < Sinatra::Base
     id = params['id']
     id.slice!(0)
     @collection = ShopifyAPI::CustomCollection.find(id)
-    @collection_data = get_collection_data(@collection.title, @collection.id)  
+    @collection_data = get_collection_data(@collection.title, @collection.id, @all_products, @all_collects)  
     json :collection_data => @collection_data
   end
 

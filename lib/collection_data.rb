@@ -3,27 +3,40 @@ require 'shopify_api'
 
 class CollectionData
 
-  attr_reader :id, :title, :products
+  attr_reader :id, :title, :products, :collects
   attr_accessor :sizes, :colors
 
   def initialize(id, title)
-    @id = id
-    @title = title
+    @id       = id
+    @title    = title
+    @collects = []
     @products = []
-    @colors = []
-    @sizes = []
-  end
-
-  def set_products(products)
-    @products = map_products_from_collects(get_collects(id), products) # get_collects is called here
+    @colors   = []
+    @sizes    = []
   end
 
   def set_colors
     @colors = filter_variant_data(products, :option2)
   end
 
-  def get_collects(id)
-    ShopifyAPI::Collect.all(:params => {:limit => 250,  :collection_id => id.to_s })
+  def set_products(products, collects)
+    @products = map_products_from_collects(collects, products).flatten
+  end
+
+  def set_collects(collects, id)
+    @collects = filter_collects(id, collects)
+  end
+
+  def map_products_from_collects(collects, products)
+    collects.map do |collect| 
+      products.select do |product| 
+        product.attributes[:id] == collect.attributes[:product_id] 
+      end
+    end 
+  end
+
+  def filter_collects(id, collects)
+    collects.select { |x| x.attributes[:collection_id] == id }
   end
 
   def add_parent_tag_to_product(product) # add tag to collection so that it knows it's parent
@@ -59,21 +72,6 @@ class CollectionData
   def format_color(string)
     (string.include? '/') && !string.nil? ? string.split('/').map{ |x| x.strip } : string.strip
   end
-
-  # def map_products_from_collects(collects, products)
-  #   collects.map do |collect| 
-  #     sleep(0.25) # rate limiter maybe do less
-  #     product = ShopifyAPI::Product.find(collect.attributes[:product_id])
-
-  #      products.select do |product|
-          
-
-  #     end
-
-  #     # get each product and check to make sure that it has a collection tag 
-  #     add_parent_tag_to_product(product) # this returns a product
-  #   end 
-  # end
 
 end
 
