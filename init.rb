@@ -72,7 +72,8 @@ def delete_filters(filters)
 end
 
 # delete all the filters first before running
-puts "this could take a while..."
+puts "hold on to your butts..."
+puts "This could take a while"
 
 delete_filters(ShopifyAPI::SmartCollection.find(:all, :params => {:limit => 250}))
 

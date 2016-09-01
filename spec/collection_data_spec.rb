@@ -100,34 +100,6 @@ describe 'CollectionData' do
   end
 
 
-  describe '#map_products_from_collects' do
-
-    before(:all) do
-      @collection = CollectionData.new(268585345, 'Summer-2016') 
-      @subject = @collection.map_products_from_collects(@collection.get_collects(268585345))  ## TODO REMOVE DEPENDANCE ON API HERE
-      @product_count = ShopifyAPI::CustomCollection.find(268585345).attributes[:products_count]  ## TODO REMOVE DEPENDANCE ON API HERE
-    end
-
-    it 'takes collects and returns an array' do
-      expect(@subject).to be_an(Array)
-    end 
-
-    it 'returns products' do
-      expect(@subject[0]).to be_kind_of(ShopifyAPI::Product)
-    end
-
-    it "should have all the products" do
-      expect(@product_count).to eq(@subject.length)
-    end
-
-    after(:all) do
-      sleep(1)
-      puts 'sleeping please wait one second'
-    end
-
-  end
-
-
   describe '#filter_variant_data' do
 
     before(:all) do
@@ -207,4 +179,31 @@ describe 'CollectionData' do
     
   end
 
+
+  describe '#map_products_from_collects' do
+
+    before(:all) do
+      @collection = CollectionData.new(268585345, 'Summer-2016') 
+      @subject = @collection.map_products_from_collects(@collection.get_collects(268585345))  ## TODO REMOVE DEPENDANCE ON API HERE
+      @product_count = ShopifyAPI::CustomCollection.find(268585345).attributes[:products_count]  ## TODO REMOVE DEPENDANCE ON API HERE
+    end
+
+    it 'takes collects and returns an array' do
+      expect(@subject).to be_an(Array)
+    end 
+
+    it 'returns products' do
+      expect(@subject[0]).to be_kind_of(ShopifyAPI::Product)
+    end
+
+    it "should have all the products" do
+      expect(@product_count).to eq(@subject.length)
+    end
+
+    after(:all) do
+      sleep(1)
+      puts 'sleeping please wait one second'
+    end
+
+  end
 end

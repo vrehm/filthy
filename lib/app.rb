@@ -24,6 +24,7 @@ class Filthy < Sinatra::Base
 
   get '/' do
     @collections = ShopifyAPI::CustomCollection.all
+    ## TODO get all products
     erb :index
   end
 
@@ -31,7 +32,7 @@ class Filthy < Sinatra::Base
     id = params['id']
     id.slice!(0)
     @collection = ShopifyAPI::CustomCollection.find(id)
-    @collection_data = get_data(@collection.title, @collection.id)  
+    @collection_data = get_collection_data(@collection.title, @collection.id)  
     json :collection_data => @collection_data
   end
 
