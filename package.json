@@ -1,0 +1,26 @@
+{
+  "name": "filter_shopify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./lib/assets/javascripts/app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jorybraun/filthy.git"
+  },
+  "keywords": [
+    "filthy",
+    "filtering"
+  ],
+  "author": "jory braun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jorybraun/filthy/issues"
+  },
+  "homepage": "https://github.com/Jorybraun/filthy#readme",
+  "devDependencies": {
+    "babel-preset-react": "^6.11.1"
+  }
+}

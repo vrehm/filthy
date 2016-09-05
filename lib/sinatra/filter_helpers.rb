@@ -12,20 +12,20 @@ module Sinatra
       return collection
     end
 
-    def get_all_collections()
-      count = ShopifyAPI::Collection
-    end
-
     def get_all_products()
       product_count = ShopifyAPI::Product.count
       nb_pages      = (product_count / 250.0).ceil
       products      = []
       minimum       = 1
 
-      1.upto(nb_pages) do |page|
-        load = ShopifyAPI::Product.find( :all, :params => { :limit => 250, :page => page })
-        products.push(load)
-        sleep(0.50)
+      unless minimum
+        products.push(ShopifyAPI::Product.find( :all, :params => { :limit => 250, :page => page }))
+      else
+        1.upto(nb_pages) do |page|
+          load = ShopifyAPI::Product.find( :all, :params => { :limit => 250, :page => page })
+          products.push(load)
+          sleep(0.50)
+        end
       end
       return products.flatten
     end

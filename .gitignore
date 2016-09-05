@@ -1,2 +1,5 @@
 secrets.rb
 .rspecsecrets.rb
+node_modules/
+node_module/
+
