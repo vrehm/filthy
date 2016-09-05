@@ -3,8 +3,8 @@ require 'shopify_api'
 
 class CollectionData
 
-  attr_reader :id, :title, :products, :collects
-  attr_accessor :sizes, :colors
+  attr_reader :id, :title, :products
+  attr_accessor :sizes, :colors, :collects
 
   def initialize(id, title)
     @id       = id
@@ -23,20 +23,12 @@ class CollectionData
     @products = map_products_from_collects(collects, products).flatten
   end
 
-  def set_collects(collects, id)
-    @collects = filter_collects(id, collects)
-  end
-
   def map_products_from_collects(collects, products)
     collects.map do |collect| 
       products.select do |product| 
         product.attributes[:id] == collect.attributes[:product_id] 
       end
     end 
-  end
-
-  def filter_collects(id, collects)
-    collects.select { |x| x.attributes[:collection_id] == id }
   end
 
   def add_parent_tag_to_product(product) # add tag to collection so that it knows it's parent
