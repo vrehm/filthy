@@ -1,6 +1,5 @@
 require 'sprockets'
 require 'sass'
-require 'babel/transpiler'
 require 'uglifier'
 
 module AssetPipeline
