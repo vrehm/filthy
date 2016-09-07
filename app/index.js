@@ -1,28 +1,14 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 
+import WashControl from './components/wash_control';
 
+const App = () => {
+  return (
+    <aside>
+      <WashControl />
+    </aside>
+  );
+}
 
-$( document ).ready(function(){
-  var  $body = $("body");
-  
-  $(document).on({
-      ajaxStart: function() { $body.addClass("loading");    },
-      ajaxStop: function() { $body.removeClass("loading");  }    
-  }); 
-
-  var $element = $('.col-button');
-
-  $element.on('click', function() { 
-    var id = $(this).data('id'); 
-
-    $.ajax({
-      type: 'GET',
-      data: 'json',
-      url: "/custom-collections/:"+id,
-      dataType: 'JSON',
-      success: function(data) {
-        console.log(data);
-      }
-    });
-
-  }); 
-})
+ReactDOM.render(<App />,  document.querySelector('.app'));
