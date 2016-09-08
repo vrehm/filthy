@@ -24,19 +24,18 @@ class Filthy < Sinatra::Base
   end
 
   get '/' do
-    @collections = ShopifyAPI::CustomCollection.all # TODO ADD CLAUSE STATING THAT IT MUST BE A MASTER
     erb :index
   end
 
-  get '/find-master-collecitons/' do
+  get '/custom-collecitons/:name' do
     ### TODO GET ALL COLLECTIONS FROM SMART AND CUSTOM, THEN FILTER THEM TO MAKE SURE THEY ARE NOT A FILTER 
   end
 
-  get '/custom-collections/:id' do
-    id = params['id']
-    id.slice!(0)
-    @collection = ShopifyAPI::CustomCollection.find(id)
-    @collection_data = get_collection_data(@collection.title, @collection.id, @all_products)  
+  get '/custom-collections/:name' do
+    name = params['name']
+    name.slice!(0)
+    @collection = ShopifyAPI::CustomCollection.find(:all, :params => {"handle"=>name})[0].attributes
+    @collection_data = get_collection_data(@collection[:title], @collection[:id], @all_products)  
     json :collection_data => @collection_data
   end
 
