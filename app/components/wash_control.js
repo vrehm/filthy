@@ -1,14 +1,14 @@
 import React from 'react';
 
-class WashControl extends React.Component {
-  render() {
-    return (
-      <div> 
-        <button />
-        <button />
-      </div>
-    );
-  }
+// import WashControl from './components/wash_control';
+
+
+const WashControl = (props) => {
+  return (
+    <div> 
+      <button onClick={props.handleClick}> Add Dirty Collection </button>
+    </div>
+  );
 } 
 
 export default WashControl;
