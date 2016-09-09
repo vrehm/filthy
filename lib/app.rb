@@ -27,14 +27,12 @@ class Filthy < Sinatra::Base
     erb :index
   end
 
-  get '/custom-collecitons/:name' do
-    ### TODO GET ALL COLLECTIONS FROM SMART AND CUSTOM, THEN FILTER THEM TO MAKE SURE THEY ARE NOT A FILTER 
-  end
-
   get '/custom-collections/:name' do
     name = params['name']
     name.slice!(0)
+    # find the collection with the paramters of the name in url, since it's an array access it's attributes
     @collection = ShopifyAPI::CustomCollection.find(:all, :params => {"handle"=>name})[0].attributes
+    # use the get_collection_data helper to create a collection object and then return it to the view in json
     @collection_data = get_collection_data(@collection[:title], @collection[:id], @all_products)  
     json :collection_data => @collection_data
   end

@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 class PopUpForm extends Component {
 
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
 
     this.state = {
-      collectionName: 'name of collection',
-      collectionType: ''
+      collectionName: 'Name Of Collection',
+      collectionType: 'Custom Collection'
     };
 
     this._findCollection = this._findCollection.bind(this);
@@ -15,7 +15,22 @@ class PopUpForm extends Component {
 
   _findCollection (e) {
     e.preventDefault();
-    const diryCollection = fetch(`http://`) 
+    // decide what url we're going to return from the input selection
+    let url = this.state.collectionType == "Custom Collection" ? "/custom-collections/:" : "/smart-collections/:";
+    // TODO create loading modal state
+    console.log();
+    // create promise of the dirty collection
+    const diryCollection = fetch(url+this.state.collectionName.toLowerCase()); 
+    // chain promise to return json and send data upstream
+    diryCollection
+      .then(data => data.json())
+      // send dirty collection up stream to be washed
+      .then(data => this.props.addDirtyCollections(data))
+      // TODO Create Success message
+      .catch((err) => {
+        console.log(err);
+        // TODO create error flash response message
+      })
   }
 
   render () {
