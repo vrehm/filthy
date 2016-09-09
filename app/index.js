@@ -22,13 +22,14 @@ class App extends Component{
   addDirtyCollections (dirtyItem) {
     var dirtyArray = this.state.dirtyCollections;
     // check if id is allready in array.
-    this.dirtyIsDuplicate(dirtyItem, dirtyArray) || dirtyArray.push(dirtyItem);
+    this.dirtyIsADuplicate(dirtyItem, dirtyArray) || dirtyArray.push(dirtyItem);
     // re-assign the value the state, as is tradition
     this.setState({dirtyCollections: dirtyArray});
   }
 
   // returns true or false
-  dirtyIsDuplicate (dirty, array) {
+  dirtyIsADuplicate (dirty, array) {
+    // map an array of collection id's and check if dirty is a duplicate
     return array.map((data) => data.collection_data.id)
     .includes(dirty.collection_data.id);   
   }
