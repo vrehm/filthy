@@ -1,5 +1,6 @@
-import React, { Componenet } from 'react';
-
+import React, { Component } from 'react';
+import ColorList from './color_list';
+import AddColorForm from './add_color_form';
 
 
 class DirtyListItem extends Component {
@@ -11,18 +12,26 @@ class DirtyListItem extends Component {
       colors: props.dirtyItem.colors,
       sizes: props.dirtyItem.sizes
     } 
-    
-    this.addColors = this.addColors.bind(this);
-    this.addSizes = this.addSizes.bind(this);
+
+    this.addColor = this.addColor.bind(this);
+    this.removeColor = this.removeColor.bind(this);
+    this.addSize = this.addSize.bind(this);
   }
 
-  addColors (color) {
+  addColor (color) {
     let colors = this.state.colors;
     colors.push(color);
     this.setState({colors: colors});
+  }
+
+  removeColor (i) {
+    this.setState(state => {
+      state.colors.splice(i, 1);
+      return {colors: state.colors}
+    });
   } 
 
-  addSizes (size) {
+  addSize (size) {
     let sizes = this.state.sizes;
     sizes.push(size);
     this.setState({sizes: sizes});
@@ -31,7 +40,9 @@ class DirtyListItem extends Component {
   render() {
     return (
       <li>
-      
+        <h2>{ this.props.dirtyItem.title }</h2>
+        <AddColorForm addColor={ this.addColor }/> 
+        <ColorList removeColor={ this.removeColor } colors={ this.state.colors } />
       </li>
     )
   }

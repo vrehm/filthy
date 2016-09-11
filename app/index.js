@@ -33,7 +33,7 @@ class App extends Component{
     return array.map((data) => data.collection_data.id)
     .includes(dirty.collection_data.id);   
   }
-  // toggle popup state
+  // toggle popup state from wash_control.js
   _togglePopUpState () {
     this.setState({ 
       popupOpen: !this.state.popupOpen ? true : false  

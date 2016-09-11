@@ -18,7 +18,6 @@ class PopUpForm extends Component {
     // decide what url we're going to return from the input selection
     let url = this.state.collectionType == "Custom Collection" ? "/custom-collections/:" : "/smart-collections/:";
     // TODO create loading modal state
-    console.log();
     // create promise of the dirty collection
     const diryCollection = fetch(url+this.state.collectionName.toLowerCase()); 
     // chain promise to return json and send data upstream
