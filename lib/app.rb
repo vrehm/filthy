@@ -45,6 +45,18 @@ class Filthy < Sinatra::Base
     json :collection_data => @collection_data
   end
 
+  post '/create-filter' do
+    payload = params
+    payload = JSON.parse(request.body.read).symbolize_keys unless params[:path]
+
+    puts "I got some JSON: #{payload.inspect}"
+
+    #TODO Take in collection data and parse it's colors and sizes
+
+    # Return collection with meta fields for size and colors associated with it's filters 
+    # It should also have a meta tags stating that it's been cleaned by filthy
+  end
+ 
   #Make post route for creating collection
 
   #Make get route for clean collectionsnb

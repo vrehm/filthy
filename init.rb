@@ -42,7 +42,7 @@ def create_filters(collection_data, sizes)
       sleep(0.75)
     end
   end
-
+  
   collection_data.sizes.each do |size|
     new_filter(collection_data, [size] ) 
     sleep(0.75)
