@@ -39,10 +39,11 @@ class DirtyListItem extends Component {
 
   render() {
     return (
-      <li>
+      <li className="list-group-item">
         <h2>{ this.props.dirtyItem.title }</h2>
-        <AddColorForm addColor={ this.addColor }/> 
+        <AddColorForm addColor={ this.addColor }/>
         <ColorList removeColor={ this.removeColor } colors={ this.state.colors } />
+        <button className="btn-success btn"> Clean </button>
       </li>
     )
   }

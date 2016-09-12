@@ -37,11 +37,15 @@ class Filthy < Sinatra::Base
     json :collection_data => @collection_data
   end
 
-  get '/smart-collections/:id' do
+  get '/smart-collections/:id' do #TODO make sure this works :)
     id = params['id']
     id.slice!(0)
     @collection = ShopifyAPI::SmartCollection.find(id)
     @collection_data = get_collection_data(@collection.title, @collection.id, @all_products)  
     json :collection_data => @collection_data
   end
+
+  #Make post route for creating collection
+
+  #Make get route for clean collectionsnb
 end

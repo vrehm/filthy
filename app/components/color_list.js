@@ -18,8 +18,8 @@ class ColorList extends Component {
     });
     
     return(
-      <div>
-        <ul>{ colors }</ul>
+      <div className="color-list">
+        <ul className="list-group">{ colors }</ul>
       </div>
     );
   }

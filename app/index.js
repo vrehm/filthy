@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-
 import WashControl from './components/wash_control';
-import PopUpForm from './components/find_collection_form';
 import DirtyList from './components/dirty_list';
+import AddDirty from './components/add_dirty';
 
 class App extends Component{
 
@@ -11,11 +10,11 @@ class App extends Component{
     super ();
 
     this.state = { 
-      popupOpen: false, 
+      dirtyOpen: false,
       dirtyCollections: []
     };
     // bind this to class methods
-    this._togglePopUpState = this._togglePopUpState.bind(this);
+    this._toggleDirty = this._toggleDirty.bind(this);
     this.addDirtyCollections = this.addDirtyCollections.bind(this);
   }
 
@@ -34,23 +33,33 @@ class App extends Component{
     .includes(dirty.collection_data.id);   
   }
   // toggle popup state from wash_control.js
-  _togglePopUpState () {
+  _toggleDirty () {
     this.setState({ 
-      popupOpen: !this.state.popupOpen ? true : false  
+      dirtyOpen: !this.state.dirtyOpen ? true : false
     });
   }
 
   render () {
     return (
-      <div>
-        <aside>
-          <WashControl handleClick={this._togglePopUpState} />
-        </aside>
-        <section>
-          { this.state.popupOpen ? <PopUpForm addDirtyCollections={this.addDirtyCollections} /> : null }
-          <DirtyList dirtyCollections={this.state.dirtyCollections} />
-        </section>
+
+      <div className="container-fluid">
+        <div className="row">
+          <aside className="col-sm-2 left-aside">
+            <WashControl handleClick={this._toggleDirty} />
+          </aside>
+          <section className='col-sm-5 dirty-section'>
+            <div className="dirty-section--header">
+              <h2> Dirty List </h2>
+            </div>
+            <DirtyList dirtyCollections={this.state.dirtyCollections} />
+          </section>
+        </div>
+        <AddDirty show={this.state.dirtyOpen} 
+                  onHide={this._toggleDirty} 
+                  addDirtyCollections={this.addDirtyCollections} />
       </div>
+
+
     );
   }
 }
